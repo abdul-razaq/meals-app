@@ -12,26 +12,21 @@ import Colors from "../constants/Colors";
 
 import { CATEGORIES } from "../data/dummy-data";
 
-function renderGridItem(itemData, navigation) {
-	let TouchableWrapper = TouchableOpacity;
+import CategoryGridTile from "../components/CategoryGridTile";
 
-	if (Platform.OS === "android" && Platform.Version >= 21)
-		TouchableWrapper = TouchableNativeFeedback;
+function renderGridItem(itemData, navigation) {
 	return (
-		<TouchableWrapper
-			onPress={() =>
+		<CategoryGridTile
+			item={itemData.item}
+			onSelect={() => {
 				navigation.navigate({
 					routeName: "CategoryMeals",
 					params: {
 						categoryID: itemData.item.id,
 					},
-				})
-			}
-		>
-			<View style={styles.gridItem}>
-				<Text>{itemData.item.title}</Text>
-			</View>
-		</TouchableWrapper>
+				});
+			}}
+		/>
 	);
 }
 
@@ -55,11 +50,5 @@ const styles = StyleSheet.create({
 		flex: 1,
 		alignItems: "center",
 		justifyContent: "center",
-	},
-
-	gridItem: {
-		flex: 1,
-		margin: 15,
-		height: 150,
 	},
 });
