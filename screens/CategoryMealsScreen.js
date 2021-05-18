@@ -1,9 +1,12 @@
 import React from "react";
 import { View, FlatList, StyleSheet } from "react-native";
 
+import { HeaderButtons, Item } from "react-navigation-header-buttons";
+
 import { CATEGORIES, MEALS } from "../data/dummy-data";
 
 import MealItem from "../components/MealItem";
+import HeaderButton from "../components/HeaderButton";
 
 function renderMealItem(itemData, navigation) {
 	return (
@@ -14,7 +17,6 @@ function renderMealItem(itemData, navigation) {
 					routeName: "MealDetails",
 					params: {
 						mealID: itemData.item.id,
-						meal: itemData.item,
 					},
 				});
 			}}
@@ -44,6 +46,17 @@ CategoryMealsScreen.navigationOptions = navigationData => {
 	const category = CATEGORIES.find(category => category.id === categoryID);
 	return {
 		headerTitle: category.title,
+		headerRight: (
+			<HeaderButtons HeaderButtonComponent={HeaderButton}>
+				<Item
+					title="Favorite"
+					iconName="ios-star"
+					onPress={() => {
+						console.log("Mark as favorite!");
+					}}
+				></Item>
+			</HeaderButtons>
+		),
 	};
 };
 
