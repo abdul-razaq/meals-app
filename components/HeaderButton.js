@@ -17,5 +17,3 @@ export default function CustomHeaderButton(props) {
 		/>
 	);
 }
-
-const styles = StyleSheet.create({});
