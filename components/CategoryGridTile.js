@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
 		shadowOpacity: 0.26,
 		shadowOffset: { width: 0, height: 2 },
 		shadowRadius: 10,
-		elevation: 6,
+		elevation: 8,
 	},
   title: {
     fontFamily: "open-sans-bold",
