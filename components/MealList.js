@@ -24,7 +24,7 @@ export default function MealList(props) {
 		<View style={styles.list}>
 			<FlatList
 				keyExtractor={(item, index) => item.id}
-				data={props.data}
+				data={props.listData}
 				renderItem={itemData => renderMealItem(itemData, props.navigation)}
 				style={{ width: "100%" }}
 			/>

@@ -11,7 +11,7 @@ export default function FavoriteMealsScreen(props) {
 			favoriteMeals.push(meal);
 		}
 	}
-	return <MealList data={favoriteMeals} navigation={props.navigation} />;
+	return <MealList listData={favoriteMeals} navigation={props.navigation} />;
 }
 
 FavoriteMealsScreen.navigationOptions = {

@@ -8,7 +8,7 @@ export default function CategoryMealsScreen(props) {
 	const categoryMeals = MEALS.filter(meal =>
 		meal.categoryIds.includes(props.navigation.getParam("categoryID"))
 	);
-	return <MealList data={categoryMeals} navigation={props.navigation} />;
+	return <MealList listData={categoryMeals} navigation={props.navigation} />;
 }
 
 CategoryMealsScreen.navigationOptions = navigationData => {
