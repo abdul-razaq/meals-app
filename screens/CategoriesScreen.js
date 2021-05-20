@@ -8,11 +8,15 @@ import {
 	Platform,
 	StyleSheet,
 } from "react-native";
+
+import { HeaderButtons, Item } from "react-navigation-header-buttons";
+
 import Colors from "../constants/Colors";
 
 import { CATEGORIES } from "../data/dummy-data";
 
 import CategoryGridTile from "../components/CategoryGridTile";
+import HeaderButton from "../components/HeaderButton";
 
 function renderGridItem(itemData, navigation) {
 	return (
@@ -41,8 +45,19 @@ export default function CategoriesScreen(props) {
 	);
 }
 
-CategoriesScreen.navigationOptions = {
-	headerTitle: "Meals Categories",
+CategoriesScreen.navigationOptions = navigationData => {
+	return {
+		headerTitle: "Meal Categories",
+		headerLeft: () => (
+			<HeaderButtons HeaderButtonComponent={HeaderButton}>
+				<Item
+					title="Meals"
+					iconName="ios-menu"
+					onPress={() => navigationData.navigation.toggleDrawer()}
+				></Item>
+			</HeaderButtons>
+		),
+	};
 };
 
 const styles = StyleSheet.create({

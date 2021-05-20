@@ -1,6 +1,9 @@
 import React from "react";
 
+import { HeaderButtons, Item } from "react-navigation-header-buttons";
+
 import MealList from "../components/MealList";
+import HeaderButton from "../components/HeaderButton";
 
 import { MEALS } from "../data/dummy-data";
 
@@ -11,6 +14,17 @@ export default function FavoriteMealsScreen(props) {
 	return <MealList listData={favoriteMeals} navigation={props.navigation} />;
 }
 
-FavoriteMealsScreen.navigationOptions = {
-	headerTitle: "Your Favorite Meals...",
+FavoriteMealsScreen.navigationOptions = navigationData => {
+	return {
+		headerTitle: "Your Favorite Meals...",
+		headerLeft: () => (
+			<HeaderButtons HeaderButtonComponent={HeaderButton}>
+				<Item
+					title="Meals"
+					iconName="ios-menu"
+					onPress={() => navigationData.navigation.toggleDrawer()}
+				></Item>
+			</HeaderButtons>
+		),
+	};
 };
