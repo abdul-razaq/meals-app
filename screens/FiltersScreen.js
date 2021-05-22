@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { View, Text, Switch, Platform, StyleSheet } from "react-native";
 
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
@@ -6,7 +6,7 @@ import HeaderButton from "../components/HeaderButton";
 
 import Colors from "../constants/Colors";
 
-function filterSwitch(props) {
+function FilterSwitch(props) {
 	return (
 		<View style={styles.filterContainer}>
 			<Text>{props.label}</Text>
@@ -21,30 +21,48 @@ function filterSwitch(props) {
 }
 
 export default function FiltersScreen(props) {
+	const { navigation } = props;
+
 	const [isGlutenFree, setIsGlutenFree] = useState(false);
 	const [isLactoseFree, setIsLactoseFree] = useState(false);
 	const [isVegan, setIsVegan] = useState(false);
 	const [isVegetarian, setIsVegetarian] = useState(false);
 
+	const saveFilters = useCallback(() => {
+		const filtersStates = {
+			glutenFree: isGlutenFree,
+			lactoseFree: isLactoseFree,
+			vegan: isVegan,
+			vegetarian: isVegetarian,
+		};
+		console.log(filtersStates);
+	}, [isGlutenFree, isLactoseFree, isVegan, isVegetarian]);
+
+	useEffect(() => {
+		navigation.setParams({
+			save: saveFilters,
+		});
+	}, [saveFilters]);
+
 	return (
 		<View style={styles.screen}>
 			<Text style={styles.title}>Available Filters / Restrictions</Text>
-			<filterSwitch
-				label="Gluten-free"
+			<FilterSwitch
+				label="Gluten-Free"
 				value={isGlutenFree}
 				onValueChange={newValue => setIsGlutenFree(newValue)}
 			/>
-			<filterSwitch
-				label="Lactose-free"
+			<FilterSwitch
+				label="Lactose-Free"
 				value={isLactoseFree}
 				onValueChange={newValue => setIsLactoseFree(newValue)}
 			/>
-			<filterSwitch
+			<FilterSwitch
 				label="Vegan"
 				value={isVegan}
 				onValueChange={newValue => setIsVegan(newValue)}
 			/>
-			<filterSwitch
+			<FilterSwitch
 				label="Vegetarian"
 				value={isVegetarian}
 				onValueChange={newValue => setIsVegetarian(newValue)}
@@ -62,6 +80,15 @@ FiltersScreen.navigationOptions = navigationData => {
 					title="Meals"
 					iconName="ios-menu"
 					onPress={() => navigationData.navigation.toggleDrawer()}
+				></Item>
+			</HeaderButtons>
+		),
+		headerRight: () => (
+			<HeaderButtons HeaderButtonComponent={HeaderButton}>
+				<Item
+					title="Save"
+					iconName="ios-save"
+					onPress={navigationData.navigation.getParam("save")}
 				></Item>
 			</HeaderButtons>
 		),
@@ -84,5 +111,6 @@ const styles = StyleSheet.create({
 		fontFamily: "open-sans",
 		fontSize: 22,
 		textAlign: "center",
+		marginTop: 20,
 	},
 });
