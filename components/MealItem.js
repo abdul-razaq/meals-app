@@ -78,6 +78,7 @@ const styles = StyleSheet.create({
 		paddingHorizontal: 10,
 		justifyContent: "space-between",
 		alignItems: "center",
+		// we set height to 15%, so that the alignItems: center config is respected and is applied.
 		height: "15%",
 	},
 });
