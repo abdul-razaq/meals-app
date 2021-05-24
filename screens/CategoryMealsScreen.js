@@ -13,11 +13,14 @@ export default function CategoryMealsScreen(props) {
 	const categoryMeals = availableMeals.filter(meal =>
 		meal.categoryIds.includes(props.navigation.getParam("categoryID"))
 	);
-	return !availableMeals.length ? (
-		<NoContent>No meals in this category! check your filter settings.</NoContent>
+	const content = !availableMeals.length ? (
+		<NoContent>
+			No meals in this category! check your filter settings.
+		</NoContent>
 	) : (
 		<MealList listData={categoryMeals} navigation={props.navigation} />
 	);
+	return content;
 }
 
 CategoryMealsScreen.navigationOptions = navigationData => {
