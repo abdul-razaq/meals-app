@@ -1,10 +1,11 @@
 import React from "react";
 
-import { useSelector } from 'react-redux';
+import { useSelector } from "react-redux";
 
 import { CATEGORIES } from "../data/dummy-data";
 
 import MealList from "../components/MealList";
+import NoContent from "../components/NoContent";
 
 export default function CategoryMealsScreen(props) {
 	const availableMeals = useSelector(state => state.meals.filteredMeals);
@@ -12,7 +13,11 @@ export default function CategoryMealsScreen(props) {
 	const categoryMeals = availableMeals.filter(meal =>
 		meal.categoryIds.includes(props.navigation.getParam("categoryID"))
 	);
-	return <MealList listData={categoryMeals} navigation={props.navigation} />;
+	return !availableMeals.length ? (
+		<NoContent>No meals in this category! check your filter settings.</NoContent>
+	) : (
+		<MealList listData={categoryMeals} navigation={props.navigation} />
+	);
 }
 
 CategoryMealsScreen.navigationOptions = navigationData => {
