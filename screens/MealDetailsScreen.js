@@ -1,20 +1,15 @@
-import React from "react";
+import React, { useEffect, useCallback } from "react";
 
-import {
-	View,
-	Text,
-	Image,
-	ScrollView,
-	StyleSheet,
-	Button,
-} from "react-native";
+import { View, Text, Image, ScrollView, StyleSheet } from "react-native";
+
+import { useSelector, useDispatch } from "react-redux";
 
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 
-import { MEALS } from "../data/dummy-data";
-
 import HeaderButton from "../components/HeaderButton";
 import DefaultText from "../components/DefaultText";
+
+import { toggleFavorite } from "../store/actions/meals";
 
 const TextItem = props => {
 	return (
@@ -25,9 +20,33 @@ const TextItem = props => {
 };
 
 export default function MealDetailsScreen(props) {
-	const meal = MEALS.find(
+	const availableMeals = useSelector(state => state.meals.meals);
+
+	const meal = availableMeals.find(
 		meal => meal.id === props.navigation.getParam("mealID")
 	);
+	const isCurrentMealFavorite = useSelector(state =>
+		state.meals.favoriteMeals.some(favMeal => favMeal.id === meal.id)
+	);
+
+	const dispatchFunction = useDispatch();
+
+	const toggleFavoriteHandler = useCallback(() => {
+		dispatchFunction(toggleFavorite(meal.id));
+	}, [dispatchFunction, meal.id]);
+
+	useEffect(() => {
+		props.navigation.setParams({
+			toggleFav: toggleFavoriteHandler,
+		});
+	}, [toggleFavoriteHandler]);
+
+	useEffect(() => {
+		props.navigation.setParams({
+			isCurrentMealFav: isCurrentMealFavorite,
+		});
+	}, [isCurrentMealFavorite]);
+
 	return (
 		<View style={styles.screen}>
 			<ScrollView>
@@ -51,19 +70,19 @@ export default function MealDetailsScreen(props) {
 }
 
 MealDetailsScreen.navigationOptions = navigationData => {
-	const meal = MEALS.find(
-		meal => meal.id === navigationData.navigation.getParam("mealID")
-	);
+	const mealTitle = navigationData.navigation.getParam("mealTitle");
+	const toggleFavorite = navigationData.navigation.getParam("toggleFav");
+	const isCurrentMealFavorite =
+		navigationData.navigation.getParam("isCurrentMealFav");
+
 	return {
-		headerTitle: meal.title,
+		headerTitle: mealTitle,
 		headerRight: () => (
 			<HeaderButtons HeaderButtonComponent={HeaderButton}>
 				<Item
 					title="Favorite"
-					iconName="ios-star"
-					onPress={() => {
-						console.log("Mark as favorite!");
-					}}
+					iconName={isCurrentMealFavorite ? "ios-star" : "ios-star-outline"}
+					onPress={toggleFavorite}
 				></Item>
 			</HeaderButtons>
 		),
